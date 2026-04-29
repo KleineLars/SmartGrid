@@ -158,10 +158,15 @@
             align-items: center;
             gap: 25px;
             border: 1px solid var(--glass-border);
-            transition: 0.4s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .step:hover { transform: scale(1.02); border-color: var(--main-color); }
+        /* Deze klasse wordt door JavaScript toegevoegd op mobiel */
+        .step.active, .step:hover {
+            transform: scale(1.05);
+            border-color: var(--main-color);
+            background: rgba(255, 255, 255, 0.05);
+        }
 
         .num {
             background: var(--main-color);
@@ -190,7 +195,9 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .step { flex-direction: column; text-align: center; }
+            .step { flex-direction: column; text-align: center; padding: 25px; }
+            /* Op mobiel de schaal iets minder extreem maken om overlap te voorkomen */
+            .step.active { transform: scale(1.03); }
         }
     </style>
 </head>
@@ -248,6 +255,32 @@
     <footer>
         © 2026 SmartGrid • Build by <b>Kleine_Lars</b>
     </footer>
+
+    <script>
+        const steps = document.querySelectorAll('.step');
+        
+        const observerOptions = {
+            root: null, // gebruik de viewport
+            rootMargin: '-20% 0px -20% 0px', // activeer als het kaartje in het middelste 60% van het scherm staat
+            threshold: 0.7 // 70% van het kaartje moet zichtbaar zijn
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (window.innerWidth <= 768) { // Alleen uitvoeren op mobiel/tablet
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        entry.target.classList.remove('active');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        steps.forEach(step => {
+            observer.observe(step);
+        });
+    </script>
 
 </body>
 </html>
