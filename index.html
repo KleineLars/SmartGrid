@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartGrid</title>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --main-color: #ff6600; 
+            --text-color: #1a1a1a;
+            --card-bg: rgba(245, 245, 245, 0.4);
+            --nav-bg: rgba(255, 255, 255, 0.1);
+            --footer-text: #666666;
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --liquid-shadow: inset 0 2px 5px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.05);
+            --cta-gradient: linear-gradient(-45deg, #ff6600, #ff9e00, #ff6600);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0a0a0a;
+                --main-color: #3b82f6; 
+                --text-color: #ffffff;
+                --card-bg: rgba(22, 22, 22, 0.4);
+                --nav-bg: rgba(0, 0, 0, 0.2);
+                --footer-text: #999999;
+                --glass-border: rgba(255, 255, 255, 0.1);
+                --liquid-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 10px 20px rgba(0,0,0,0.3);
+                --cta-gradient: linear-gradient(-45deg, #3b82f6, #2dd4bf, #3b82f6);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes liquidFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent), var(--bg-color);
+        }
+
+        .glass-btn {
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--liquid-shadow);
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .glass-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--main-color);
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.1), 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: var(--nav-bg);
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--main-color); }
+
+        .nav-links { display: flex; gap: 10px; }
+
+        .btn-install {
+            background: var(--main-color);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        header {
+            text-align: center;
+            padding: 100px 20px 60px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h1 { font-size: clamp(45px, 8vw, 85px); margin: 0; color: var(--main-color); letter-spacing: -2px; }
+        .tagline { font-size: clamp(18px, 3vw, 32px); font-weight: 300; margin-top: 10px; }
+
+        .cta-liquid {
+            display: inline-block;
+            margin-top: 40px;
+            background: var(--cta-gradient);
+            background-size: 200% 200%;
+            animation: liquidFlow 5s infinite;
+            color: white;
+            padding: 20px 50px;
+            border-radius: 20px;
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .cta-liquid:hover { transform: scale(1.05) translateY(-5px); }
+
+        .install-wrap {
+            width: 90%;
+            max-width: 750px;
+            margin-bottom: 80px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .step-title { text-align: center; font-size: 32px; margin-bottom: 50px; }
+
+        .step {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            padding: 35px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            border: 1px solid var(--glass-border);
+            transition: 0.4s;
+        }
+
+        .step:hover { transform: scale(1.02); border-color: var(--main-color); }
+
+        .num {
+            background: var(--main-color);
+            color: white;
+            min-width: 50px;
+            height: 50px;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .step-info h3 { margin: 0 0 10px 0; font-size: 24px; }
+        .step-info p { margin: 0; opacity: 0.9; line-height: 1.6; font-size: 18px; }
+
+        footer {
+            margin-top: auto;
+            padding: 40px;
+            color: var(--footer-text);
+            font-size: 14px;
+        }
+
+        footer b { color: var(--main-color); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .step { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SmartGrid</div>
+        
+        <div class="nav-links">
+            <a href="#setup" class="glass-btn">Installatie</a>
+            <a href="https://discord.gg/CkeXqXpQGa" target="_blank" class="glass-btn">Discord</a>
+            <a href="https://chromewebstore.google.com/detail/fndiolbcfhmgdglheombonplgkdanimo/reviews" target="_blank" class="glass-btn">Reviews</a>
+        </div>
+
+        <a href="https://chromewebstore.google.com/detail/fndiolbcfhmgdglheombonplgkdanimo" target="_blank" class="glass-btn btn-install">Installeren</a>
+    </nav>
+
+    <header>
+        <h1>SmartGrid</h1>
+        <p class="tagline">beste <b>Smartschool extensie</b></p>
+        <a href="#setup" class="cta-liquid">Probeer het nu</a>
+    </header>
+
+    <div class="install-wrap" id="setup">
+        <h2 class="step-title">Hoe SmartGrid te installeren</h2>
+
+        <div class="step">
+            <div class="num">1</div>
+            <div class="step-info">
+                <h3>Ga naar de Chrome Web Store</h3>
+                <p>Ga naar de Web Store en zoek naar SmartGrid of klik op 
+                    <a style="color:var(--main-color); font-weight:800; text-decoration:none;" href="https://chromewebstore.google.com/detail/fndiolbcfhmgdglheombonplgkdanimo" target="_blank">SmartGrid</a>.
+                </p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="num">2</div>
+            <div class="step-info">
+                <h3>Klik op "Installeren"</h3>
+                <p>Klik op Downloaden en sta vervolgens alle vereiste machtigingen toe.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="num">3</div>
+            <div class="step-info">
+                <h3>Ga naar je Smartschool</h3>
+                <p>Ga naar je Smartschool en vernieuw de pagina.<br>
+                <strong>Gefeliciteerd, je reis is net begonnen!</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 SmartGrid • Build by <b>Kleine_Lars</b>
+    </footer>
+
+</body>
+</html>
