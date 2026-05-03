@@ -75,11 +75,14 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            /* Voorkom blauwe highlight bij tikken op mobiel */
-            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Navigatie */
+        .glass-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--main-color);
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.1), 0 8px 25px rgba(0,0,0,0.1);
+        }
+
         nav {
             width: 90%;
             max-width: 1000px;
@@ -132,8 +135,9 @@
             text-decoration: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: 0.3s;
-            -webkit-tap-highlight-color: transparent;
         }
+
+        .cta-liquid:hover { transform: scale(1.05) translateY(-5px); }
 
         .install-wrap {
             width: 90%;
@@ -147,6 +151,7 @@
         .step {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             margin-bottom: 20px;
             padding: 35px;
             border-radius: 30px;
@@ -154,32 +159,10 @@
             align-items: center;
             gap: 25px;
             border: 1px solid var(--glass-border);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            /* Voorkom dat tikken op mobiel de hover activeert */
-            pointer-events: auto;
-            -webkit-tap-highlight-color: transparent;
+            transition: 0.4s;
         }
 
-        /* Alleen vergroten bij hover op computers (muis) */
-        @media (hover: hover) {
-            .step:hover {
-                transform: scale(1.05);
-                border-color: var(--main-color);
-                background: rgba(255, 255, 255, 0.05);
-            }
-            .glass-btn:hover {
-                transform: translateY(-2px);
-                border-color: var(--main-color);
-            }
-            .cta-liquid:hover { transform: scale(1.05) translateY(-5px); }
-        }
-
-        /* De klasse die via JS wordt toegevoegd (geen tik-effect nodig) */
-        .step.active {
-            transform: scale(1.04);
-            border-color: var(--main-color);
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .step:hover { transform: scale(1.02); border-color: var(--main-color); }
 
         .num {
             background: var(--main-color);
@@ -197,6 +180,10 @@
         .step-info h3 { margin: 0 0 10px 0; font-size: 24px; }
         .step-info p { margin: 0; opacity: 0.9; line-height: 1.6; font-size: 18px; }
 
+        .contributor-list { list-style: none; padding: 0; margin: 0; }
+        .contributor-list li { margin-bottom: 8px; font-size: 16px; }
+        .contributor-list b { color: var(--main-color); }
+
         footer {
             margin-top: auto;
             padding: 40px;
@@ -208,7 +195,7 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .step { flex-direction: column; text-align: center; padding: 25px; }
+            .step { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -263,36 +250,25 @@
         </div>
     </div>
 
+    <!-- ONS TEAM SECTIE -->
+    <div class="install-wrap">
+        <h2 class="step-title">Ons team</h2>
+        <div class="step">
+            <div class="step-info">
+                <h3>developer team</h3>
+                <ul class="contributor-list">
+                    <li><b>Kleine_Lars</b></li>
+                    <p style="font-size: 16px; opacity: 0.8; margin-top: 5px;">
+                        CEO, Developer, Designer, Social Media Manager & Discord Administrator
+                    </p>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <footer>
         © 2026 SmartGrid • Build by <b>Kleine_Lars</b>
     </footer>
-
-    <script>
-        const steps = document.querySelectorAll('.step');
-        
-        const observerOptions = {
-            root: null,
-            rootMargin: '-25% 0px -25% 0px', // Detectiegebied in het midden van het scherm
-            threshold: 0.6
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                // Alleen doen op mobiel (scherm smaller dan 768px)
-                if (window.innerWidth <= 768) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    } else {
-                        entry.target.classList.remove('active');
-                    }
-                }
-            });
-        }, observerOptions);
-
-        steps.forEach(step => {
-            observer.observe(step);
-        });
-    </script>
 
 </body>
 </html>
